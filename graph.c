@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-
+#include<string.h>
 typedef struct Node{
     int data;
     struct Node * next;
@@ -64,19 +64,15 @@ void push(Node ** n,int data){
     p->next=temp;
     return;
 }
-void fill(int * arr,int n){
-    for(int i=0;i<n;i++){
-        *(arr+i)=0;
-    }
-}
+
 Graph * makeGraph(int v,int e){
     Graph * g=malloc(sizeof(Graph));
     g->v=v;
     g->e=e;
     g->adj=malloc(v*sizeof(int*));
     for(int i=0;i<v;i++){
-        g->adj[i]=malloc(5*sizeof(int));
-        fill(g->adj[i],v);
+        g->adj[i]=malloc(g->v*sizeof(int));
+        memset(g->adj[i],0,g->v*sizeof(int));
     }
     return g;
 }
@@ -89,9 +85,7 @@ void addEdge(Graph * g,int start,int e){
 
 void BFS(Graph * g,int start){
     _Bool * visited=malloc(g->v*sizeof(_Bool));
-    for(int i=0;i<g->v;i++){
-        visited[i]=0;
-    }
+    memset(visited,0,g->v*sizeof(_Bool));
     Queue * q=creatQueue();
     enQueue(q,start);
     visited[start]=1;
@@ -109,10 +103,20 @@ void BFS(Graph * g,int start){
         }
     }
 }
+
 int main(){
-    Graph * g=makeGraph(5,4);
-    addEdge(g,0,1);
-    addEdge(g,0,2);
+    Graph * g=makeGraph(9,11);
+    addEdge(g,1,2);
+    addEdge(g,1,8);
     addEdge(g,1,3);
-    BFS(g,0);
+    addEdge(g,2,4);
+    addEdge(g,2,5);
+    addEdge(g,2,8);
+    addEdge(g,3,6);
+    addEdge(g,3,7);
+    addEdge(g,4,8);
+    addEdge(g,5,8);
+    addEdge(g,6,8);
+    addEdge(g,7,8);
+    BFS(g,2);
 }
