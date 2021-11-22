@@ -65,6 +65,30 @@ void push(Node ** n,int data){
     return;
 }
 
+
+void stackPush(Node ** top,int data){
+    Node * temp=newNode(data);
+    if(*top==NULL){
+        *top=temp;
+        return;
+    }
+    temp->next=*top;
+    *top=temp;
+}
+
+int stackPop(Node ** top){
+    int popped=0;
+    if(*top==NULL){
+        printf("Stack is empty can't pop\n");
+        return -1;
+    }
+    else{
+        popped=*top->data;
+        *top=*top->next;
+        return popped;
+    }
+}
+
 Graph * makeGraph(int v,int e){
     Graph * g=malloc(sizeof(Graph));
     g->v=v;
@@ -104,6 +128,27 @@ void BFS(Graph * g,int start){
     }
 }
 
+void DFS(Graph * g, int start){
+    _Bool * visited=malloc(g->v*sizeof(_Bool));
+    memset(visited,0,g->v*sizeof(_Bool));
+    Node * stack=NULL;
+    stackPush(&stack,start);
+    visited[start]=1;
+    
+    int vis=0;
+    while(stack!=NULL){
+        vis=stack->data;
+        printf("%d ",vis);
+        for(int i=0;i<g->v;i++){
+            if(g->adj[vis][i] && !visited[i]){
+                visited[i]=1;
+                
+            }
+        }
+    }
+    
+}
+
 int main(){
     Graph * g=makeGraph(9,11);
     addEdge(g,1,2);
@@ -118,5 +163,5 @@ int main(){
     addEdge(g,5,8);
     addEdge(g,6,8);
     addEdge(g,7,8);
-    BFS(g,2);
+    BFS(g,1);
 }
